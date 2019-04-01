@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>clamtian</title>
   
-  
+  <subtitle>YOU&#39;VE MADE A &lt;span&gt;BRAVE&lt;/span&gt; DECISION, WELCOME.</subtitle>
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
