@@ -1,8 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[leetcode714：买卖股票的最佳时机含手续费]]></title>
+    <url>%2F2019%2F04%2F02%2Fleetcode714%EF%BC%9A%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BA%E5%90%AB%E6%89%8B%E7%BB%AD%E8%B4%B9%2F</url>
+    <content type="text"><![CDATA[先看问题给定一个整数数组 prices，其中第 i 个元素代表了第 i 天的股票价格 ；非负整数 fee 代表了交易股票的手续费用。 你可以无限次地完成交易，但是你每次交易都需要付手续费。如果你已经购买了一个股票，在卖出它之前你就不能再继续购买股票了。 返回获得利润的最大值。 实例1： 12345678输入: prices = [1, 3, 2, 8, 4, 9], fee = 2输出: 8解释: 能够达到的最大利润: 在此处买入 prices[0] = 1在此处卖出 prices[3] = 8在此处买入 prices[4] = 4在此处卖出 prices[5] = 9总利润: ((8 - 1) - 2) + ((9 - 4) - 2) = 8. 注意: 0 &lt; prices.length &lt;= 50000. 0 &lt; prices[i] &lt; 50000. 0 &lt;= fee &lt; 50000. 问题分析 典型的dp问题，可用标准的dp公式解决。 创建两个数组have和noHave，hava[i]表示第i天持有股票时的最大收益，noHave[i]表示第i天不持有股票时的最大收益。 可以得到dp公式： ​ have[i] = max(have[i], noHave[i] - prices[i]) ​ noHave[i] = max(have[i] + prices[i] - fee, noHave[i]) noHave[len - 1]即为此数组的最大收益。 代码1234567891011121314151617181920class Solution &#123; public int maxProfit(int[] prices, int fee) &#123; int len = prices.length; if(len == 1)&#123; return 0; &#125; //dp1[i]代表第i天持有股票 //dp2[i]代表第i天未持有股票 int[] dp1 = new int[len]; int[] dp2 = new int[len]; dp1[0] = -prices[0]; int i = 1; while(i &lt; len)&#123; dp1[i] = Math.max(dp1[i - 1],dp2[i - 1] - prices[i]); dp2[i] = Math.max(dp1[i - 1] + prices[i] - fee,dp2[i - 1]); i++; &#125; return dp2[len - 1]; &#125;&#125; 由于整个过程只使用到dp1[i]、dp1[i - 1]、dp2[i]和dp2[i -1]，所以其实可以使用四个变量来代替数组，使得空间复杂度达到O(n)。 123456789101112131415161718192021class Solution &#123; public int maxProfit(int[] prices, int fee) &#123; int len = prices.length; if(len == 1)&#123; return 0; &#125; int d1 = -prices[0]; int d2 = 0;; int p1 = 0; int p2 = 0;; int i = 1; while(i &lt; len)&#123; d2 = Math.max(d1,p1 - prices[i]); p2 = Math.max(d1 + prices[i] - fee,p1); p1 = p2; d1 = d2; i++; &#125; return p2; &#125;&#125; 运行结果]]></content>
+      <categories>
+        <category>leeetcode题解</category>
+      </categories>
+      <tags>
+        <tag>leetcode</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[leetcode621：任务调度器]]></title>
-    <url>%2F2019%2F04%2F01%2Fleetcode%2F</url>
+    <url>%2F2019%2F04%2F01%2Fleetcode621%EF%BC%9A%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6%E5%99%A8%2F</url>
     <content type="text"><![CDATA[先看问题：给定一个用字符数组表示的 CPU 需要执行的任务列表。其中包含使用大写的 A - Z 字母表示的26 种不同种类的任务。任务可以以任意顺序执行，并且每个任务都可以在 1 个单位时间内执行完。CPU 在任何一个单位时间内都可以执行一个任务，或者在待命状态。 然而，两个相同种类的任务之间必须有长度为 n 的冷却时间，因此至少有连续 n 个单位时间内 CPU 在执行不同的任务，或者在待命状态。 你需要计算完成所有任务所需要的最短时间。 实例1： 123输入: tasks = [&quot;A&quot;,&quot;A&quot;,&quot;A&quot;,&quot;B&quot;,&quot;B&quot;,&quot;B&quot;], n = 2输出: 8执行顺序: A -&gt; B -&gt; (待命) -&gt; A -&gt; B -&gt; (待命) -&gt; A -&gt; B. 注： 任务的总个数为 [1, 10000]。n 的取值范围为 [0, 100]。 解答思路首先看到“大写的A-Z”时，我就想到应该可以用大小为26的数组来充当辅助数组，但之后却没有一个良好完整的思路，纠结无果后，去网上找了题解来看，这里来记录一下这道题，以供自己日后温习。以 [“A”,”A”,”A”,”A”,”B”,”B”,”B”,”B”,”C”,”C”,”C”,”D”,”D”,”E”]，n = 2，为例来进行说明。首先用26大小数组来确定每个任务的数量，然后将数组进行排序，将数量最大的排到最后。由于任务是交替执行的，数量最多的任务必然应该安排到每个n的节点上以求达到最短时间，如图（其中“#”代表除A以外的其他字符）： A # # A # # A # # A # … 这时可以看到ans至少等于（A的数量-1）*（n + 1）+ 1，其它数量小于等于A的字符就可以被安插在“#”的位置。这时数量等于A的字符必然会占到最后一个A后面“#”的位置，如下图的B，这时ans的数量就要加一： A C # A C # A C # A C … 代码：12345678910111213141516171819202122232425class Solution &#123; public int leastInterval(char[] tasks, int n) &#123; int len = tasks.length; if(len &lt; 1 || n &lt; 0)&#123; return 0; &#125; int[] nums = new int[26]; int i = 0; //得到每个字符的数量后再排序 while(i &lt; len)&#123; nums[tasks[i++] - 65]++; &#125; Arrays.sort(nums); //res的最小值 int res = (nums[25] - 1) * (n + 1); i = 25; while(i &gt;= 0 &amp;&amp; nums[i] == nums[25])&#123; //若最多数量的字符有多个 则res相应地+1 res++; i--; &#125; //得到的结果为res与数组长度len之间最大值 return res &gt; len ? res : len; &#125;&#125; 运行结果]]></content>
       <categories>
         <category>leetcode题解</category>
