@@ -119,7 +119,7 @@
 
 
 
-  <meta name="keywords" content="leetcode,">
+  <meta name="keywords" content="leetcode 算法,">
 
 
 
@@ -133,7 +133,7 @@
 
 
 <meta name="description" content="先看问题给定一个整数数组 prices，其中第 i 个元素代表了第 i 天的股票价格 ；非负整数 fee 代表了交易股票的手续费用。 你可以无限次地完成交易，但是你每次交易都需要付手续费。如果你已经购买了一个股票，在卖出它之前你就不能再继续购买股票了。 返回获得利润的最大值。 实例1： 12345678输入: prices = [1, 3, 2, 8, 4, 9], fee = 2输出: 8解释:">
-<meta name="keywords" content="leetcode">
+<meta name="keywords" content="leetcode 算法">
 <meta property="og:type" content="article">
 <meta property="og:title" content="leetcode714：买卖股票的最佳时机含手续费">
 <meta property="og:url" content="http://yoursite.com/2019/04/02/leetcode714：买卖股票的最佳时机含手续费/index.html">
@@ -141,7 +141,7 @@
 <meta property="og:description" content="先看问题给定一个整数数组 prices，其中第 i 个元素代表了第 i 天的股票价格 ；非负整数 fee 代表了交易股票的手续费用。 你可以无限次地完成交易，但是你每次交易都需要付手续费。如果你已经购买了一个股票，在卖出它之前你就不能再继续购买股票了。 返回获得利润的最大值。 实例1： 12345678输入: prices = [1, 3, 2, 8, 4, 9], fee = 2输出: 8解释:">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2019/04/02/leetcode714：买卖股票的最佳时机含手续费/QQ截图20190402222122.png">
-<meta property="og:updated_time" content="2019-04-02T14:33:52.741Z">
+<meta property="og:updated_time" content="2020-09-26T03:11:21.822Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="leetcode714：买卖股票的最佳时机含手续费">
 <meta name="twitter:description" content="先看问题给定一个整数数组 prices，其中第 i 个元素代表了第 i 天的股票价格 ；非负整数 fee 代表了交易股票的手续费用。 你可以无限次地完成交易，但是你每次交易都需要付手续费。如果你已经购买了一个股票，在卖出它之前你就不能再继续购买股票了。 返回获得利润的最大值。 实例1： 12345678输入: prices = [1, 3, 2, 8, 4, 9], fee = 2输出: 8解释:">
@@ -495,7 +495,7 @@ function setSidebarMarginTop (headerOffset) {
 <p>​    noHave[i] = max(have[i] + prices[i] - fee, noHave[i])</p>
 <p>noHave[len - 1]即为此数组的最大收益。</p>
 <h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">maxProfit</span><span class="params">(<span class="keyword">int</span>[] prices, <span class="keyword">int</span> fee)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> len = prices.length;</span><br><span class="line">        <span class="keyword">if</span>(len == <span class="number">1</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//dp1[i]代表第i天持有股票</span></span><br><span class="line">        <span class="comment">//dp2[i]代表第i天未持有股票</span></span><br><span class="line">        <span class="keyword">int</span>[] dp1 = <span class="keyword">new</span> <span class="keyword">int</span>[len];</span><br><span class="line">        <span class="keyword">int</span>[] dp2 = <span class="keyword">new</span> <span class="keyword">int</span>[len];</span><br><span class="line">        dp1[<span class="number">0</span>] = -prices[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span>(i &lt; len)&#123;</span><br><span class="line">            dp1[i] = Math.max(dp1[i - <span class="number">1</span>],dp2[i - <span class="number">1</span>] - prices[i]);</span><br><span class="line">            dp2[i] = Math.max(dp1[i - <span class="number">1</span>] + prices[i] - fee,dp2[i - <span class="number">1</span>]);</span><br><span class="line">            i++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp2[len - <span class="number">1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>由于整个过程只使用到dp1[i]、dp1[i - 1]、dp2[i]和dp2[i  -1]，所以其实可以使用四个变量来代替数组，使得空间复杂度达到O(n)。</p>
+<p>由于整个过程只使用到dp1[i]、dp1[i - 1]、dp2[i]和dp2[i  -1]，所以其实可以使用四个变量来代替数组，使得空间复杂度达到O(1)。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">maxProfit</span><span class="params">(<span class="keyword">int</span>[] prices, <span class="keyword">int</span> fee)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> len = prices.length;</span><br><span class="line">        <span class="keyword">if</span>(len == <span class="number">1</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> d1 = -prices[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">int</span> d2 = <span class="number">0</span>;;</span><br><span class="line">        <span class="keyword">int</span> p1 = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> p2 = <span class="number">0</span>;;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span>(i &lt; len)&#123;</span><br><span class="line">            d2 = Math.max(d1,p1 - prices[i]);</span><br><span class="line">            p2 = Math.max(d1 + prices[i] - fee,p1);</span><br><span class="line">            p1 = p2;</span><br><span class="line">            d1 = d2;</span><br><span class="line">            i++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> p2;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="运行结果"><a href="#运行结果" class="headerlink" title="运行结果"></a>运行结果</h2><p><img src="/2019/04/02/leetcode714：买卖股票的最佳时机含手续费/QQ截图20190402222122.png" alt="QQ截图20190402222122"></p>
 
@@ -530,7 +530,7 @@ function setSidebarMarginTop (headerOffset) {
       
         <div class="post-tags">
           
-            <a href="/tags/leetcode/" rel="tag"><i class="fa fa-tag"></i> leetcode</a>
+            <a href="/tags/leetcode-算法/" rel="tag"><i class="fa fa-tag"></i> leetcode 算法</a>
           
         </div>
       
@@ -640,7 +640,7 @@ function setSidebarMarginTop (headerOffset) {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -662,7 +662,7 @@ function setSidebarMarginTop (headerOffset) {
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -735,7 +735,7 @@ function setSidebarMarginTop (headerOffset) {
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 
-<div class="copyright">&copy; Mon Apr 01 2019 08:00:00 GMT+0800 (GMT+08:00) &mdash; <span itemprop="copyrightYear">2019</span>
+<div class="copyright">&copy; Mon Apr 01 2019 08:00:00 GMT+0800 (GMT+08:00) &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
