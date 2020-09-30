@@ -372,12 +372,259 @@ function setSidebarMarginTop (headerOffset) {
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/29/FDTD_1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="clamtian">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar1.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="clamtian">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/09/29/FDTD_1/" itemprop="url">FDTD讲解_1</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-09-29T10:29:37+08:00">
+                2020-09-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/FDTD/" itemprop="url" rel="index">
+                    <span itemprop="name">FDTD</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/09/29/FDTD_1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/09/29/FDTD_1/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>要彻底弄懂FDTD，首先就要从基本的麦克斯韦方程组出发，一步步推导至我们编程需要的公式。<br>典型的时域麦克斯韦方程组如下：</p>
+<script type="math/tex; mode=display">\begin{cases}
+\frac {\partial H_z}{\partial y}-\frac {\partial H_y}{\partial z}=\epsilon\frac {\partial E_x}{\partial t}+\sigma E_x\\[2ex]
+\frac {\partial H_x}{\partial z}-\frac {\partial H_z}{\partial x}=\epsilon\frac {\partial E_y}{\partial t}+\sigma E_y\\[2ex]
+\frac {\partial H_y}{\partial x}-\frac {\partial H_x}{\partial y}=\epsilon\frac {\partial E_z}{\partial t}+\sigma E_z
+\end{cases}</script><p>以及</p>
+<script type="math/tex; mode=display">\begin{cases}
+\frac {\partial E_z}{\partial y}-\frac {\partial E_y}{\partial z}=-\mu\frac {\partial H_x}{\partial t}-\sigma_m H_x\\[2ex]
+\frac {\partial E_x}{\partial z}-\frac {\partial E_z}{\partial x}=-\mu\frac {\partial H_y}{\partial t}-\sigma_m H_y\\[2ex]
+\frac {\partial E_y}{\partial x}-\frac {\partial E_x}{\partial y}=-\mu\frac {\partial H_z}{\partial t}-\sigma_m H_z
+\end{cases}</script><p>为了后续推导的方便，我们首先定义</p>
+<script type="math/tex; mode=display">f(x, y, z, t) = f(i\Delta x, j\Delta y, k\Delta z, n\Delta t)=f^n(i, j, k)</script><p>然后对麦克斯韦方程组中的一节偏导数取中心差分近似，有</p>
+<script type="math/tex; mode=display">\begin{cases}
+\frac {\partial f(x, y, z, t)}{\partial x}|_{x=i\Delta x}\approx \frac { f^n(i+1/2, j, k) - f^n(i-1/2, j, k)}{\Delta x}\\[2ex]
+\frac {\partial f(x, y, z, t)}{\partial y}|_{x=j\Delta y}\approx \frac { f^n(i, j + 1/2, k) - f^n(i, j - 1/2, k)}{\Delta y}\\[2ex]
+\frac {\partial f(x, y, z, t)}{\partial z}|_{x=k\Delta z}\approx \frac { f^n(i, j, k + 1/2) - f^n(i, j, k - 1/2)}{\Delta z}\\[2ex]
+\frac {\partial f(x, y, z, t)}{\partial t}|_{x=n\Delta t}\approx \frac { f^{n + 1/2}(i, j, k) - f^{n - 1/2}(i, j, k)}{\Delta t}
+\end{cases}</script><p>然后便可以得到著名的Yee元胞：<br><img src="/2020/09/29/FDTD_1/Yee.png" alt="Yee">  </p>
+<p>由上述推导以及Yee元胞中可以看到，在FDTD中电场与磁场的采样位置和采样时间皆相差半个步长。如此，当给定电磁问题的初始值以及边界条件后，便可以根据差分公式一步步地推导空间任意点处的电场与磁场。<br>下面便是根据差分公式推导出的麦克斯韦方程组的FDTD形式（无耗各向同性媒质中）：</p>
+<script type="math/tex; mode=display">\begin{cases}
+{E^{n + 1}_{x}(i + 1/2, j, k)} = CA \cdot {E^{n}_{x}(i + 1/2, j, k)} + CB \cdot \left [
+\frac { H^{n + 1/2}_z(i + 1/2, j + 1/2, k) - H^{n + 1/2}_z(i + 1/2, j - 1/2, k)}{\Delta y} -
+\frac { H^{n + 1/2}_y(i + 1/2, j, k + 1/2) - H^{n + 1/2}_y(i + 1/2, j, k - 1/2)}{\Delta z} 
+\right ] \\[2ex]
+{E^{n + 1}_{y}(i, j + 1/2, k)} = CA \cdot {E^{n}_{y}(i, j + 1/2, k)} + CB \cdot \left [
+\frac { H^{n + 1/2}_x(i, j + 1/2, k + 1/2) - H^{n + 1/2}_x(i, j + 1/2, k - 1/2)}{\Delta z} -
+\frac { H^{n + 1/2}_z(i + 1/2, j + 1/2, k) - H^{n + 1/2}_z(i - 1/2, j + 1/2, k)}{\Delta x} 
+\right ] \\[2ex]
+{E^{n + 1}_{z}(i, j, k + 1/2)} = CA \cdot {E^{n}_{z}(i, j, k + 1/2)} + CB \cdot \left [
+\frac { H^{n + 1/2}_y(i + 1/2, j, k + 1/2) - H^{n + 1/2}_y(i - 1/2, j, k + 1/2)}{\Delta x} -
+\frac { H^{n + 1/2}_x(i, j + 1/2, k + 1/2) - H^{n + 1/2}_x(i, j - 1/2, k + 1/2)}{\Delta y} 
+\right ] 
+\end{cases}</script><p>以及</p>
+<script type="math/tex; mode=display">\begin{cases}
+{H^{n + 1/2}_{x}(i, j + 1/2, k + 1/2)} = CP \cdot {H^{n - 1/2}_{x}(i, j + 1/2, k + 1/2)} - CQ \cdot \left [
+\frac { E^{n}_z(i, j + 1, k + 1/2) - E^{n}_z(i, j, k + 1/2)}{\Delta y} -
+\frac { E^{n}_y(i, j + 1/2, k + 1) - E^{n}_y(i, j + 1/2, k)}{\Delta z} 
+\right ] \\[2ex]
+{H^{n + 1/2}_{y}(i + 1/2, j, k + 1/2)} = CP \cdot {H^{n - 1/2}_{y}(i + 1/2, j, k + 1/2)} - CQ \cdot \left [
+\frac { E^{n}_x(i + 1/2, j, k + 1) - E^{n}_x(i + 1/2, j, k)}{\Delta z} -
+\frac { E^{n}_z(i + 1, j, k + 1/2) - E^{n}_z(i, j, k + 1/2)}{\Delta x} 
+\right ] \\[2ex]
+{H^{n + 1/2}_{z}(i + 1/2, j + 1/2, k)} = CP \cdot {H^{n - 1/2}_{z}(i + 1/2, j + 1/2, k)} - CQ \cdot \left [
+\frac { E^{n}_y(i + 1, j + 1/2, k) - E^{n}_y(i, j + 1/2, k)}{\Delta x} -
+\frac { E^{n}_x(i + 1/2, j + 1, k) - E^{n}_x(i + 1/2, j, k)}{\Delta y} 
+\right ]
+\end{cases}</script><p>上式中</p>
+<script type="math/tex; mode=display">CA = \frac {\frac {\epsilon}{\Delta t} - \frac {\sigma}{2}}{\frac {\epsilon}{\Delta t} + \frac {\sigma}{2}} = \frac {1 - \frac {\sigma \Delta t}{2 \epsilon}}{1 + \frac {\sigma \Delta t}{2 \epsilon}}</script><script type="math/tex; mode=display">CB = \frac {1}{\frac {\epsilon}{\Delta t} + \frac {\sigma}{2}} = \frac {\frac {\Delta t}{\epsilon}}{1 + \frac {\sigma \Delta t}{2 \epsilon}}</script><script type="math/tex; mode=display">CP = \frac {\frac {\mu}{\Delta t} - \frac {\sigma_m}{2}}{\frac {\mu}{\Delta t} + \frac {\sigma_m}{2}} = \frac {1 - \frac {\sigma_m \Delta t}{2 \mu}}{1 + \frac {\sigma_m \Delta t}{2 \mu}}</script><script type="math/tex; mode=display">CB = \frac {1}{\frac {\mu}{\Delta t} + \frac {\sigma_m}{2}} = \frac {\frac {\Delta t}{\mu}}{1 + \frac {\sigma_m \Delta t}{2 \mu}}</script><p>接下来讲解具体的编程思路，在上述FDTD公式中包含很多“半步长”的式子，而这些“半步长”的公式在C++中是比较难直接实现的。所以为了简化编程的复杂度，我们把这些“半步长”阉割掉，同时六个节点都用相同的整数步长。牢记，<strong>对任意给定的一组整数步长，电场节点向其所指的方向移动半个步长，磁场节点向其未指的方向移动半个步长</strong>，例如FDTD的电场公式：</p>
+<script type="math/tex; mode=display">\begin{cases}
+{E^{n + 1}_{x}(i + 1/2, j, k)} = CA \cdot {E^{n}_{x}(i + 1/2, j, k)} + CB \cdot \left [
+\frac { H^{n + 1/2}_z(i + 1/2, j + 1/2, k) - H^{n + 1/2}_z(i + 1/2, j - 1/2, k)}{\Delta y} -
+\frac { H^{n + 1/2}_y(i + 1/2, j, k + 1/2) - H^{n + 1/2}_y(i + 1/2, j, k - 1/2)}{\Delta z} 
+\right ] \\[2ex]
+{E^{n + 1}_{y}(i, j + 1/2, k)} = CA \cdot {E^{n}_{y}(i, j + 1/2, k)} + CB \cdot \left [
+\frac { H^{n + 1/2}_x(i, j + 1/2, k + 1/2) - H^{n + 1/2}_x(i, j + 1/2, k - 1/2)}{\Delta z} -
+\frac { H^{n + 1/2}_z(i + 1/2, j + 1/2, k) - H^{n + 1/2}_z(i - 1/2, j + 1/2, k)}{\Delta x} 
+\right ] \\[2ex]
+{E^{n + 1}_{z}(i, j, k + 1/2)} = CA \cdot {E^{n}_{z}(i, j, k + 1/2)} + CB \cdot \left [
+\frac { H^{n + 1/2}_y(i + 1/2, j, k + 1/2) - H^{n + 1/2}_y(i - 1/2, j, k + 1/2)}{\Delta x} -
+\frac { H^{n + 1/2}_x(i, j + 1/2, k + 1/2) - H^{n + 1/2}_x(i, j - 1/2, k + 1/2)}{\Delta y} 
+\right ] 
+\end{cases}</script><p>在实际编程时实现时，我们会把它简化成：</p>
+<script type="math/tex; mode=display">\begin{cases}
+{E^{n + 1}_{x}(i, j, k)} = CA \cdot {E^{n}_{x}(i, j, k)} + CB \cdot \left [
+\frac { H^{n}_z(i, j, k) - H^{n}_z(i, j - 1, k)}{\Delta y} -
+\frac { H^{n}_y(i, j, k) - H^{n}_y(i, j, k - 1)}{\Delta z} 
+\right ] \\[2ex]
+{E^{n + 1}_{y}(i, j, k)} = CA \cdot {E^{n}_{y}(i, j, k)} + CB \cdot \left [
+\frac { H^{n}_x(i, j, k) - H^{n}_x(i, j, k - 1)}{\Delta z} -
+\frac { H^{n}_z(i, j, k) - H^{n}_z(i - 1, j, k)}{\Delta x} 
+\right ] \\[2ex]
+{E^{n + 1}_{z}(i, j, k)} = CA \cdot {E^{n}_{z}(i, j, k)} + CB \cdot \left [
+\frac { H^{n}_y(i, j, k) - H^{n}_y(i - 1, j, k)}{\Delta x} -
+\frac { H^{n}_x(i, j, k) - H^{n}_x(i, j - 1, k)}{\Delta y} 
+\right ] 
+\end{cases}</script><p>磁场的FDTD则简化为：</p>
+<script type="math/tex; mode=display">\begin{cases}
+{H^{n + 1}_{x}(i, j, k)} = CP \cdot {H^{n}_{x}(i, j, k)} - CQ \cdot \left [
+\frac { E^{n + 1}_z(i, j + 1, k) - E^{n + 1}_z(i, j, k)}{\Delta y} -
+\frac { E^{n + 1}_y(i, j, k + 1) - E^{n + 1}_y(i, j, k)}{\Delta z} 
+\right ] \\[2ex]
+{H^{n + 1}_{y}(i, j, k)} = CP \cdot {H^{n}_{y}(i, j, k)} - CQ \cdot \left [
+\frac { E^{n + 1}_x(i, j, k + 1) - E^{n + 1}_x(i, j, k)}{\Delta z} -
+\frac { E^{n + 1}_z(i + 1, j, k) - E^{n + 1}_z(i, j, k)}{\Delta x} 
+\right ] \\[2ex]
+{H^{n + 1}_{z}(i, j, k)} = CP \cdot {H^{n}_{z}(i, j, k)} - CQ \cdot \left [
+\frac { E^{n + 1}_y(i + 1, j, k) - E^{n + 1}_y(i, j, k)}{\Delta x} -
+\frac { E^{n + 1}_x(i, j + 1, k) - E^{n + 1}_x(i, j, k)}{\Delta y} 
+\right ]
+\end{cases}</script><p>注意，上式中的$H^n$和$E^n$是相差半个时间步长的，如下图：<br><img src="/2020/09/29/FDTD_1/EH.png" alt="EH"><br>这样，磁场和电场就可以随着时间交替求解。<br>我用C++实现了上述过程，<a href="https://github.com/clamtian/FDTD" target="_blank" rel="noopener">点击此处</a>查看。</p>
+
+          
+        
+      
+    </div>
+	
+
+    
+    
+    
+
+    
+
+    
+
+
+  
+
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/02/leetcode714：买卖股票的最佳时机含手续费/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="clamtian">
       <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar2.jpg">
+      <meta itemprop="image" content="/images/avatar1.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -558,7 +805,7 @@ function setSidebarMarginTop (headerOffset) {
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="clamtian">
       <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar2.jpg">
+      <meta itemprop="image" content="/images/avatar1.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -664,6 +911,7 @@ function setSidebarMarginTop (headerOffset) {
 <p>注：</p>
 <p>任务的总个数为 [1, 10000]。<br>n 的取值范围为 [0, 100]。</p>
 <h2 id="解答思路"><a href="#解答思路" class="headerlink" title="解答思路"></a>解答思路</h2><p>首先看到“大写的A-Z”时，我就想到应该可以用大小为26的数组来充当辅助数组，但之后却没有一个良好完整的思路，纠结无果后，去网上找了题解来看，这里来记录一下这道题，以供自己日后温习。<br>以 [“A”,”A”,”A”,”A”,”B”,”B”,”B”,”B”,”C”,”C”,”C”,”D”,”D”,”E”]，n = 2，为例来进行说明。<br>首先用26大小数组来确定每个任务的数量，然后将数组进行排序，将数量最大的排到最后。由于任务是交替执行的，数量最多的任务必然应该安排到每个n的节点上以求达到最短时间，如图（其中“#”代表除A以外的其他字符）：</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -697,7 +945,9 @@ function setSidebarMarginTop (headerOffset) {
 </tr>
 </tbody>
 </table>
+</div>
 <p>这时可以看到ans至少等于（A的数量-1）*（n + 1）+ 1，其它数量小于等于A的字符就可以被安插在“#”的位置。这时数量等于A的字符必然会占到最后一个A后面“#”的位置，如下图的B，这时ans的数量就要加一：</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -731,6 +981,7 @@ function setSidebarMarginTop (headerOffset) {
 </tr>
 </tbody>
 </table>
+</div>
 <h2 id="代码："><a href="#代码：" class="headerlink" title="代码："></a>代码：</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">leastInterval</span><span class="params">(<span class="keyword">char</span>[] tasks, <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> len = tasks.length;</span><br><span class="line">        <span class="keyword">if</span>(len &lt; <span class="number">1</span> || n &lt; <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span>[] nums = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">26</span>];</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">        <span class="comment">//得到每个字符的数量后再排序</span></span><br><span class="line">        <span class="keyword">while</span>(i &lt; len)&#123;</span><br><span class="line">            nums[tasks[i++] - <span class="number">65</span>]++;</span><br><span class="line">        &#125;</span><br><span class="line">        Arrays.sort(nums);</span><br><span class="line">        <span class="comment">//res的最小值</span></span><br><span class="line">        <span class="keyword">int</span> res = (nums[<span class="number">25</span>] - <span class="number">1</span>) * (n + <span class="number">1</span>);</span><br><span class="line">        i = <span class="number">25</span>;</span><br><span class="line">        <span class="keyword">while</span>(i &gt;= <span class="number">0</span> &amp;&amp; nums[i] == nums[<span class="number">25</span>])&#123;</span><br><span class="line">	    <span class="comment">//若最多数量的字符有多个 则res相应地+1</span></span><br><span class="line">            res++;</span><br><span class="line">            i--;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//得到的结果为res与数组长度len之间最大值</span></span><br><span class="line">        <span class="keyword">return</span> res &gt; len ? res : len;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="运行结果"><a href="#运行结果" class="headerlink" title="运行结果"></a>运行结果</h2><p><img src="/2019/04/01/leetcode621：任务调度器/20190401220410783.png" alt="20190401220410783"></p>
 
@@ -809,7 +1060,7 @@ function setSidebarMarginTop (headerOffset) {
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
-              <img class="site-author-image" itemprop="image" src="/images/avatar2.jpg" alt="clamtian">
+              <img class="site-author-image" itemprop="image" src="/images/avatar1.jpg" alt="clamtian">
             
               <p class="site-author-name" itemprop="name">clamtian</p>
               <p class="site-description motion-element" itemprop="description">每一个不曾起舞的日子都是对生命的辜负。</p>
@@ -822,7 +1073,7 @@ function setSidebarMarginTop (headerOffset) {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -833,7 +1084,7 @@ function setSidebarMarginTop (headerOffset) {
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -844,7 +1095,7 @@ function setSidebarMarginTop (headerOffset) {
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -1412,6 +1663,28 @@ function setSidebarMarginTop (headerOffset) {
   
 
   
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
 
   
 
