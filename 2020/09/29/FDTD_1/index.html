@@ -142,7 +142,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2020/09/29/FDTD_1/Yee.png">
 <meta property="og:image" content="http://yoursite.com/2020/09/29/FDTD_1/EH.png">
-<meta property="og:updated_time" content="2020-09-30T06:47:05.160Z">
+<meta property="og:updated_time" content="2020-09-30T12:02:36.759Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="FDTD讲解_1">
 <meta name="twitter:description" content="要彻底弄懂FDTD，首先就要从基本的麦克斯韦方程组出发，一步步推导至我们编程需要的公式。典型的时域麦克斯韦方程组如下： \begin{cases} \frac {\partial H_z}{\partial y}-\frac {\partial H_y}{\partial z}=\epsilon\frac {\partial E_x}{\partial t}+\sigma E_x\\[2ex] \">
@@ -522,7 +522,7 @@ function setSidebarMarginTop (headerOffset) {
 \frac { E^{n}_x(i + 1/2, j + 1, k) - E^{n}_x(i + 1/2, j, k)}{\Delta y} 
 \right ]
 \end{cases}</script><p>上式中</p>
-<script type="math/tex; mode=display">CA = \frac {\frac {\epsilon}{\Delta t} - \frac {\sigma}{2}}{\frac {\epsilon}{\Delta t} + \frac {\sigma}{2}} = \frac {1 - \frac {\sigma \Delta t}{2 \epsilon}}{1 + \frac {\sigma \Delta t}{2 \epsilon}}</script><script type="math/tex; mode=display">CB = \frac {1}{\frac {\epsilon}{\Delta t} + \frac {\sigma}{2}} = \frac {\frac {\Delta t}{\epsilon}}{1 + \frac {\sigma \Delta t}{2 \epsilon}}</script><script type="math/tex; mode=display">CP = \frac {\frac {\mu}{\Delta t} - \frac {\sigma_m}{2}}{\frac {\mu}{\Delta t} + \frac {\sigma_m}{2}} = \frac {1 - \frac {\sigma_m \Delta t}{2 \mu}}{1 + \frac {\sigma_m \Delta t}{2 \mu}}</script><script type="math/tex; mode=display">CB = \frac {1}{\frac {\mu}{\Delta t} + \frac {\sigma_m}{2}} = \frac {\frac {\Delta t}{\mu}}{1 + \frac {\sigma_m \Delta t}{2 \mu}}</script><p>接下来讲解具体的编程思路，在上述FDTD公式中包含很多“半步长”的式子，而这些“半步长”的公式在C++中是比较难直接实现的。所以为了简化编程的复杂度，我们把这些“半步长”阉割掉，同时六个节点都用相同的整数步长。牢记，<strong>对任意给定的一组整数步长，电场节点向其所指的方向移动半个步长，磁场节点向其未指的方向移动半个步长</strong>，例如FDTD的电场公式：</p>
+<script type="math/tex; mode=display">CA = \frac {\frac {\epsilon}{\Delta t} - \frac {\sigma}{2}}{\frac {\epsilon}{\Delta t} + \frac {\sigma}{2}} = \frac {1 - \frac {\sigma \Delta t}{2 \epsilon}}{1 + \frac {\sigma \Delta t}{2 \epsilon}}</script><script type="math/tex; mode=display">CB = \frac {1}{\frac {\epsilon}{\Delta t} + \frac {\sigma}{2}} = \frac {\frac {\Delta t}{\epsilon}}{1 + \frac {\sigma \Delta t}{2 \epsilon}}</script><script type="math/tex; mode=display">CP = \frac {\frac {\mu}{\Delta t} - \frac {\sigma_m}{2}}{\frac {\mu}{\Delta t} + \frac {\sigma_m}{2}} = \frac {1 - \frac {\sigma_m \Delta t}{2 \mu}}{1 + \frac {\sigma_m \Delta t}{2 \mu}}</script><script type="math/tex; mode=display">CQ = \frac {1}{\frac {\mu}{\Delta t} + \frac {\sigma_m}{2}} = \frac {\frac {\Delta t}{\mu}}{1 + \frac {\sigma_m \Delta t}{2 \mu}}</script><p>接下来讲解具体的编程思路，在上述FDTD公式中包含很多“半步长”的式子，而这些“半步长”的公式在C++中是比较难直接实现的。所以为了简化编程的复杂度，我们把这些“半步长”阉割掉，同时六个节点都用相同的整数步长。牢记，<strong>对任意给定的一组整数步长，电场节点向其所指的方向移动半个步长，磁场节点向其未指的方向移动半个步长</strong>，例如FDTD的电场公式：</p>
 <script type="math/tex; mode=display">\begin{cases}
 {E^{n + 1}_{x}(i + 1/2, j, k)} = CA \cdot {E^{n}_{x}(i + 1/2, j, k)} + CB \cdot \left [
 \frac { H^{n + 1/2}_z(i + 1/2, j + 1/2, k) - H^{n + 1/2}_z(i + 1/2, j - 1/2, k)}{\Delta y} -
@@ -624,6 +624,10 @@ function setSidebarMarginTop (headerOffset) {
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2020/10/07/FDTD_2/" rel="prev" title="FDTD讲解_2">
+                FDTD讲解_2 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -702,7 +706,7 @@ function setSidebarMarginTop (headerOffset) {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -724,7 +728,7 @@ function setSidebarMarginTop (headerOffset) {
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
